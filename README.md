@@ -58,6 +58,17 @@ python main.py --model vit --dataset tiny_imagenet
   </tr>
 
   <tr>
+    <td><b>Food-101</b></td>
+    <td>1,204,874</td>
+    <td><b>72.28</b></td>
+    <td><b>1.1652</b></td>
+    <td>18,979,338</td>
+    <td>62.26</td>
+    <td>1.4040</td>
+    <td><b>CNN 🏆</b></td>
+  </tr>
+
+  <tr>
     <td><b>Tiny ImageNet</b></td>
     <td>6,545,224</td>
     <td>22.67</td>
@@ -109,7 +120,22 @@ python main.py --model vit --dataset tiny_imagenet
     <td>62.26</td>
     <td>1.4040</td>
   </tr>
-
+  
+  <tr>
+    <td rowspan="2"><b>Food-101</b></td>
+    <td><code>CNN</code></td>
+    <td>6,545,224</td>
+    <td>22.67</td>
+    <td>3.9591</td>
+    <td rowspan="2"><b>ViT</b></td>
+  </tr>
+  <tr>
+    <td><code>ViT</code></td>
+    <td>19,175,112</td>
+    <td><b>...</b></td>
+    <td><b>...</b></td>
+  </tr>
+  
   <tr>
     <td rowspan="2"><b>Tiny ImageNet</b></td>
     <td><code>CNN</code></td>
