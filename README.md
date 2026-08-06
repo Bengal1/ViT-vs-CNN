@@ -142,7 +142,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td>6,545,224</td>
     <td>22.67</td>
     <td>3.9591</td>
-    <td rowspan="2"><b>ViT</b></td>
+    <td rowspan="2"><b>ViT 🏆</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
