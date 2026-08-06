@@ -249,9 +249,17 @@ Tiny ImageNet is a scaled-down version of ImageNet, containing 64×64 RGB images
 
 The three datasets differ primarily in image complexity, resolution, and semantic diversity. MNIST contains simple, centered grayscale digits with minimal variation, making it an easy task dominated by local features. CIFAR-10 introduces color, background noise, and object variability at a small resolution, increasing the difficulty and requiring better feature extraction. Tiny ImageNet further increases resolution and the number of classes, adding significant intra-class variation and global structure, which makes the task more challenging and better suited for models that capture broader contextual relationships.<br/>
 
+
 ## 📚 Reference
 [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805?utm_source=chatgpt.com)
 
 [An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929?utm_source=chatgpt.com)
 
 [Decoupled Weight Decay Regularization](https://arxiv.org/abs/1711.05101)
+
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+See the [LICENSE](LICENSE) file for more details.
