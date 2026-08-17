@@ -70,8 +70,8 @@ python main.py --model vit --dataset tiny_imagenet
   <tr>
     <td><code>ViT</code></td>
     <td>19,175,112</td>
-    <td><b>...</b></td>
-    <td><b>...</b></td>
+    <td><b>67.335</b></td>
+    <td><b>2.001</b></td>
   </tr>
   
   <tr>
