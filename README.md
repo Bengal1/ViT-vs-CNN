@@ -26,7 +26,7 @@ python main.py --model vit --dataset tiny_imagenet
     <th>Parameters</th>
     <th>Accuracy (%)</th>
     <th>Loss</th>
-    <th>Best Model</th>
+    <th>Best Model 🏆</th>
   </tr>
 
   <tr>
@@ -35,7 +35,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td>843,850</td>
     <td><b>99.35</b></td>
     <td><b>0.5305</b></td>
-    <td rowspan="2"><b>🏆 CNN</b></td>
+    <td rowspan="2"><b>CNN</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
@@ -65,7 +65,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td>6,545,224</td>
     <td>30.578</td>
     <td>3.238</td>
-    <td rowspan="2"><b>🏆 ViT</b></td>
+    <td rowspan="2"><b>ViT</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
@@ -80,7 +80,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td>6,545,224</td>
     <td>22.67</td>
     <td>3.9591</td>
-    <td rowspan="2"><b>ViT 🏆</b></td>
+    <td rowspan="2"><b>ViT</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
