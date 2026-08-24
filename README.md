@@ -48,15 +48,15 @@ python main.py --model vit --dataset tiny_imagenet
     <td rowspan="2"><b>CIFAR-10</b></td>
     <td><code>CNN</code></td>
     <td>1,204,874</td>
-    <td><b>72.28</b></td>
-    <td><b>1.1652</b></td>
+    <td><b>76.1</b></td>
+    <td><b>1.087</b></td>
     <td rowspan="2"><b>CNN</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
     <td>18,979,338</td>
-    <td>62.26</td>
-    <td>1.4040</td>
+    <td>66.05</td>
+    <td>1.574</td>
   </tr>
   
   <tr>
