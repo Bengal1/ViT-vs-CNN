@@ -33,8 +33,8 @@ python main.py --model vit --dataset tiny_imagenet
     <td rowspan="2"><b>MNIST</b></td>
     <td><code>CNN</code></td>
     <td>843,850</td>
-    <td><b>99.35</b></td>
-    <td><b>0.5305</b></td>
+    <td><b>99.44</b></td>
+    <td><b>0.519</b></td>
     <td rowspan="2"><b>CNN</b></td>
   </tr>
   <tr>
