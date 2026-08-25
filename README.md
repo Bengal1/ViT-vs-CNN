@@ -84,7 +84,7 @@ python main.py --model vit --dataset tiny_imagenet
   </tr>
   <tr>
     <td><code>ViT</code></td>
-    <td>19,175,112</td>
+    <td>14,372,936</td>
     <td><b>...</b></td>
     <td><b>...</b></td>
   </tr>
