@@ -183,7 +183,7 @@ MNIST is a grayscale dataset of handwritten digits (0–9) at 28×28 resolution,
 CIFAR-10 consists of 32×32 RGB images across 10 object classes (animals, vehicles, etc.), with 50,000 training and 10,000 test samples. It adds color, cluttered backgrounds, and greater variation within each class, while still using very low resolution. This makes it a useful midpoint: harder than MNIST, since classification can no longer rely on a single consistent local pattern, but still small enough in scale that CNNs, which are built to prioritize nearby pixels over distant ones, perform well.
 
 ### Food-101
-<img align="right" width="300" height="1176" alt="dataset_dif" src="https://github.com/user-attachments/assets/968c0a03-c022-4570-a29d-364a477139e9" />
+<img align="right" width="300" alt="dataset_dif" src="https://github.com/user-attachments/assets/968c0a03-c022-4570-a29d-364a477139e9" />
 Food-101 contains 101,000 real-world photos across 101 food categories, split into 750 training and 250 test images per class. Its training images are intentionally left uncleaned, some mislabeled or visually noisy, and resolution varies up to 512×512. Many dishes look similar to one another, while photos of the same dish can look very different depending on angle, plating, and lighting. This combination pushes classification to depend increasingly on relating different regions of an image to each other, rather than on any single local pattern.
 
 ### Tiny ImageNet
