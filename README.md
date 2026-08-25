@@ -40,8 +40,8 @@ python main.py --model vit --dataset tiny_imagenet
   <tr>
     <td><code>ViT</code></td>
     <td>14,226,442</td>
-    <td>93.27</td>
-    <td>0.6838</td>
+    <td>99.08</td>
+    <td>0.532</td>
   </tr>
 
   <tr>
