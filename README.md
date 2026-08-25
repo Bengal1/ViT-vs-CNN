@@ -62,14 +62,14 @@ python main.py --model vit --dataset tiny_imagenet
   <tr>
     <td rowspan="2"><b>Food-101</b></td>
     <td><code>CNN</code></td>
-    <td>6,545,224</td>
+    <td>29,563,109</td>
     <td>30.578</td>
     <td>3.238</td>
     <td rowspan="2"><b>ViT</b></td>
   </tr>
   <tr>
     <td><code>ViT</code></td>
-    <td>19,175,112</td>
+    <td>14,408,549</td>
     <td><b>67.335</b></td>
     <td><b>2.001</b></td>
   </tr>
