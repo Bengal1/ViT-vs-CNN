@@ -84,7 +84,8 @@ def main(args: argparse.Namespace | None = None) -> None:
     train_loader, val_loader, test_loader, img_size, num_classes = get_dataloaders(
         dataset=cfg.dataset,
         batch_size=cfg.training.batch_size,
-        train_validation_split=cfg.training.validation_split
+        train_validation_split=cfg.training.validation_split,
+        seed=cfg.seed
     )
 
     model, loss_fn, optimizer, device, scheduler = setup_model_for_training(
@@ -101,10 +102,14 @@ def main(args: argparse.Namespace | None = None) -> None:
         validation_loader=val_loader,
         device=device,
         num_epochs=cfg.training.epochs,
-        scheduler=scheduler
+        scheduler=scheduler,
+        accumulation_steps=cfg.training.accumulation_steps,
+        max_gradient_clip=cfg.training.max_grad_clip,
+        patience=cfg.training.patience,
+        #  new_run=False,
     )
 
-    load_checkpoint(model, cfg.best_checkpoint_path)
+    load_checkpoint(model, cfg.checkpoint_path)
 
     test_accuracy, test_loss = evaluate_model(
         model=model,

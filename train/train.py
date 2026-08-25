@@ -22,7 +22,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from config import config as cfg
-from utils import save_checkpoint
+from utils import save_checkpoint, check_and_load_checkpoint
 
 
 __author__ = "Bengal1"
@@ -104,6 +104,7 @@ def train_model(
     accumulation_steps: int = 1,
     max_gradient_clip: float | None = None,
     patience: int = 5,
+    new_run: bool = True,
 ) -> dict[str, list[float]]:
     """
     Train a model with validation, checkpointing, and early stopping.
@@ -155,7 +156,15 @@ def train_model(
         "train_acc": [],
         "val_acc": [],
     }
-
+    if (new_run):
+        best_val_acc = 0.0
+        start_epoch = 1
+    else:
+        start_epoch, best_val_acc = check_and_load_checkpoint(model,
+                                                              cfg.checkpoint_path,
+                                                              optimizer,
+                                                              scheduler,
+                                                              device)
     best_val_loss = float("inf")
 
     for epoch in range(1, num_epochs + 1):
@@ -169,6 +178,9 @@ def train_model(
             max_gradient_clip=max_gradient_clip,
         )
 
+        stats["train_loss"].append(train_loss)
+        stats["train_acc"].append(train_acc)
+
         val_acc, val_loss = evaluate_model(
             model=model,
             data_loader=validation_loader,
@@ -176,14 +188,14 @@ def train_model(
             device=device,
         )
 
-        stats["train_loss"].append(train_loss)
-        stats["val_loss"].append(val_loss)
-        stats["train_acc"].append(train_acc)
-        stats["val_acc"].append(val_acc)
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            save_checkpoint(model, cfg.best_checkpoint_path,
+                            optimizer, scheduler, epoch, val_loss, best_val_acc,
+                            True)
 
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            save_checkpoint(model, cfg.best_checkpoint_path)
+        stats["val_loss"].append(val_loss)
+        stats["val_acc"].append(val_acc)
 
         print(
             f"Epoch {epoch}: "
@@ -195,9 +207,9 @@ def train_model(
             scheduler.step()
 
         if _early_stopping(
-            metric_record=stats["val_loss"],
-            patience=patience,
-            best_is_max=False,
+                metric_record=stats["val_acc"],
+                patience=patience,
+                best_is_max=True,
         ):
             print(f"Early stopping triggered at epoch {epoch}")
             break
@@ -286,7 +298,7 @@ def _train_epoch(
             optimizer.step()
             optimizer.zero_grad()
 
-        predicted = logits.argmax(dim=1)
+        _, predicted = logits.argmax(dim=1)
         correct += predicted.eq(labels).sum().item()
         total += labels.size(0)
 
@@ -301,9 +313,9 @@ def _train_epoch(
         optimizer.zero_grad()
 
     accuracy = 100.0 * correct / total
-    avg_loss = total_loss / len(data_loader)
+    epoch_loss = total_loss / len(data_loader)
 
-    return accuracy, avg_loss
+    return accuracy, epoch_loss
 
 
 def _early_stopping(
@@ -342,15 +354,13 @@ def _early_stopping(
         return False
 
     if best_is_max:
-        best = max(metric_record[:-patience])
-        recent = max(metric_record[-patience:])
-
-        return recent <= best + delta
-
-    best = min(metric_record[:-patience])
-    recent = min(metric_record[-patience:])
-
-    return recent >= best - delta
+        best_so_far = max(metric_record[:-patience])
+        recent_best = max(metric_record[-patience:])
+        return recent_best <= best_so_far - delta
+    else:
+        best_so_far = min(metric_record[:-patience])
+        recent_best = min(metric_record[-patience:])
+        return recent_best >= best_so_far + delta
 
 
 

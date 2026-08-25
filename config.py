@@ -42,12 +42,14 @@ __all__ = [
 @dataclass
 class ViTConfig:
     """Vision Transformer (ViT) hyperparameters."""
-    embed_dim: int = 512
-    num_heads: int = 8
-    num_layers: int = 6
-    patch_size: int | tuple[int, int] = 4
-    dim_feedforward: int = 2048
-    dropout: float = 0.1
+    embed_dim: int = 384
+    num_heads: int = 6
+    num_layers: int = 8
+
+    patch_size: int | tuple[int, int] = 8
+
+    dim_feedforward: int = 1536
+    dropout: float = 0.15
     norm_eps: float = 1e-6
 
 
@@ -73,24 +75,24 @@ class CNNConfig:
 @dataclass
 class TrainingConfig:
     """Training process configuration."""
-    batch_size: int = 128
-    epochs: int = 100
-    validation_split: float = 0.2
+    batch_size: int = 64
+    epochs: int = 200
+    validation_split: float = 0.15
 
     # --- Optimization behavior ---
-    accumulation_steps: int = 7
+    accumulation_steps: int = 1
     max_grad_clip: float | None = 1.0
 
     # --- Regularization ---
     label_smooth: float = 0.1
 
     # --- Early stopping ---
-    patience: int = 5
+    patience: int = 15
 
     # --- Scheduler ---
     use_scheduler: bool = True
 
-    warmup_epochs: int = 5
+    warmup_epochs: int = 10
     warmup_start_factor: float = 0.1
 
     cosine_eta_min: float = 1e-6
@@ -103,10 +105,10 @@ class TrainingConfig:
 @dataclass
 class OptimConfig:
     """Optimizer configuration."""
-    learning_rate: float = 1e-5
-    weight_decay: float = 1e-2
-    betas: tuple[float, float] = (0.9, 0.98)
-    eps: float = 1e-9
+    learning_rate: float = 2e-4
+    weight_decay: float = 8e-2
+    betas: tuple[float, float] = (0.9, 0.999)
+    eps: float = 1e-8
 
 
 # ======================================================================
@@ -124,14 +126,14 @@ class Config:
 
     # --- Runtime selection ---
     model_name: str = "vit"   # {"vit", "cnn"}
-    dataset: str = "mnist"    # {"mnist", "cifar10", "tiny_imagenet"}
+    dataset: str = "mnist"    # {"mnist", "cifar10", "food101", "tiny_imagenet"}
 
     # --- Reproducibility ---
     seed: int = 1755900008
 
     # --- Paths ---
     checkpoint_dir: str = "checkpoints"
-    run_name: str = "default"
+    run_name: str = "best"
 
     # --- Model configs ---
     vit: ViTConfig = field(default_factory=ViTConfig)
@@ -149,26 +151,6 @@ class Config:
         return (
             Path(self.checkpoint_dir)
             / f"{self.model_name}_{self.dataset}_{self.run_name}.pth"
-        )
-
-    @property
-    def best_checkpoint_path(self) -> Path:
-        """
-        Path to the best-performing checkpoint (based on validation).
-        """
-        return (
-            Path(self.checkpoint_dir)
-            / f"{self.model_name}_{self.dataset}_{self.run_name}_best.pth"
-        )
-
-    @property
-    def last_checkpoint_path(self) -> Path:
-        """
-        Path to the last checkpoint (latest training state).
-        """
-        return (
-            Path(self.checkpoint_dir)
-            / f"{self.model_name}_{self.dataset}_{self.run_name}_last.pth"
         )
 
     def update_from_args(self, args: Namespace) -> "Config":
@@ -193,7 +175,7 @@ class Config:
         if self.model_name not in {"vit", "cnn"}:
             raise ValueError(f"Invalid model_name: {self.model_name}")
 
-        if self.dataset not in {"mnist", "cifar10", "tiny_imagenet"}:
+        if self.dataset not in {"mnist", "cifar10", "food101", "tiny_imagenet"}:
             raise ValueError(f"Invalid dataset: {self.dataset}")
 
         return self

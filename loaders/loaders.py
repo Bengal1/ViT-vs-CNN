@@ -14,6 +14,7 @@ datasets used in the ViT vs CNN comparison project.
 Supported datasets:
     - MNIST
     - CIFAR-10
+    - Food-101
     - Tiny ImageNet
 
 Each dataset loader returns:
@@ -29,7 +30,7 @@ the final evaluation split depending on dataset availability.
 """
 
 import torch
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader, random_split, Subset
 from torchvision import datasets, transforms
 
 from datasets import TinyImageNetDataset, TransformedDataset
@@ -190,6 +191,172 @@ def _get_cifar10_dataloaders(
     img_size, num_classes = _get_dataset_info(train_loader)
 
     return train_loader, val_loader, test_loader, img_size, num_classes
+
+
+# ==============================================================
+# FOOD-101
+# ==============================================================
+
+def _get_food101_dataloaders(
+    batch_size: int,
+    train_validation_split: float,
+    seed: int = 1755900008,
+) -> tuple[
+    DataLoader,
+    DataLoader,
+    DataLoader,
+    tuple[int, int, int],
+    int,
+]:
+    """
+    Create DataLoaders for Food-101.
+
+    The official training split is divided into training and validation
+    subsets, while the official test split is used unchanged.
+
+    Args:
+        batch_size (int):
+            Number of samples per batch.
+
+        train_validation_split (float):
+            Fraction of the official training set used for validation.
+
+        seed (int, optional):
+            Random seed used for reproducible dataset splitting.
+
+    Returns:
+        tuple:
+            (
+                train_loader,
+                val_loader,
+                test_loader,
+                image_size,
+                num_classes,
+            )
+
+    Raises:
+        ValueError:
+            If `train_validation_split` is not in (0, 1).
+    """
+    if not 0 < train_validation_split < 1:
+        raise ValueError(
+            "train_validation_split must be between 0 and 1."
+        )
+
+    image_size = 128
+
+    train_transform = transforms.Compose([
+        transforms.RandomResizedCrop(
+            image_size,
+            scale=(0.70, 1.0),
+            ratio=(0.85, 1.15),
+        ),
+
+        transforms.RandomHorizontalFlip(p=0.5),
+
+        transforms.ColorJitter(
+            brightness=0.25,
+            contrast=0.25,
+            saturation=0.25,
+            hue=0.05,
+        ),
+
+        transforms.RandAugment(
+            num_ops=2,
+            magnitude=8,
+        ),
+
+        transforms.ToTensor(),
+
+        transforms.Normalize(
+            mean=(0.485, 0.456, 0.406),
+            std=(0.229, 0.224, 0.225),
+        ),
+
+        transforms.RandomErasing(
+            p=0.25,
+            scale=(0.02, 0.18),
+            ratio=(0.5, 2.0),
+            value="random",
+        ),
+    ])
+
+    evaluation_transform = transforms.Compose([
+        transforms.Resize(144),
+        transforms.CenterCrop(image_size),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=(0.485, 0.456, 0.406),
+            std=(0.229, 0.224, 0.225),
+        ),
+    ])
+
+    full_train_dataset = datasets.Food101(
+        root="./data",
+        split="train",
+        download=True,
+        transform=train_transform,
+    )
+
+    full_validation_dataset = datasets.Food101(
+        root="./data",
+        split="train",
+        download=False,
+        transform=evaluation_transform,
+    )
+
+    test_dataset = datasets.Food101(
+        root="./data",
+        split="test",
+        download=True,
+        transform=evaluation_transform,
+    )
+
+    generator = torch.Generator().manual_seed(seed)
+
+    indices = torch.randperm(
+        len(full_train_dataset),
+        generator=generator,
+    ).tolist()
+
+    validation_size = int(
+        len(indices) * train_validation_split
+    )
+
+    validation_indices = indices[:validation_size]
+    train_indices = indices[validation_size:]
+
+    train_dataset = Subset(
+        full_train_dataset,
+        train_indices,
+    )
+
+    val_dataset = Subset(
+        full_validation_dataset,
+        validation_indices,
+    )
+
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+    )
+
+    val_loader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+    )
+
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=False,
+    )
+
+    img_size, num_classes = _get_dataset_info(train_loader)
+
+    return train_loader,val_loader,test_loader, img_size, num_classes
 
 
 # ============================================================

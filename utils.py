@@ -37,6 +37,7 @@ __all__ = [
     "save_metrics_to_csv",
     "save_checkpoint",
     "load_checkpoint",
+    "check_and_load_checkpoint",
     "count_parameters",
 ]
 
@@ -446,30 +447,54 @@ def save_checkpoint(
     model: nn.Module,
     file_path: str | Path,
     optimizer: torch.optim.Optimizer | None = None,
+    scheduler=None,
     epoch: int | None = None,
     val_loss: float | None = None,
+    best_val_acc: float | None = None,
     full: bool = False,
 ) -> None:
     """
-    Save a model checkpoint to disk.
+    Save model weights or a complete training checkpoint to disk.
 
-    Supports two modes:
-    - Quick save (default): saves only the model state_dict.
-    - Full save: saves model, optimizer, epoch, and validation loss.
+    In quick-save mode, only the model state dictionary is stored. This
+    mode is suitable for saving the best model used later for evaluation.
+
+    In full-save mode, the function stores the training state required
+    to resume an interrupted run, including the model, optimizer,
+    scheduler, current epoch, and validation metrics.
 
     Args:
         model (nn.Module):
-            Model to save.
+            Model whose parameters will be saved.
+
         file_path (str | Path):
-            Output path for the checkpoint file.
-        optimizer (torch.optim.Optimizer, optional):
-            Optimizer to save (required if full=True).
-        epoch (int, optional):
-            Current training epoch (used if full=True).
-        val_loss (float, optional):
-            Validation loss at save time (used if full=True).
+            Destination path for the checkpoint file. Parent directories
+            are created automatically when they do not already exist.
+
+        optimizer (torch.optim.Optimizer | None, optional):
+            Optimizer whose internal state will be saved. Required when
+            `full=True`.
+
+        scheduler (optional):
+            Learning-rate scheduler whose state will be saved. May be
+            `None` when no scheduler is used.
+
+        epoch (int | None, optional):
+            Most recently completed training epoch.
+
+        val_loss (float | None, optional):
+            Validation loss recorded when the checkpoint was saved.
+
+        best_val_acc (float | None, optional):
+            Highest validation accuracy recorded up to the saved epoch.
+
         full (bool, optional):
-            If True, saves full training checkpoint. Otherwise saves only model.
+            If `True`, saves the complete training state. If `False`,
+            saves only the model state dictionary. Defaults to `False`.
+
+    Raises:
+        ValueError:
+            If `full=True` but no optimizer is provided.
     """
     file_path = Path(file_path)
     file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -478,48 +503,101 @@ def save_checkpoint(
         if optimizer is None:
             raise ValueError("optimizer must be provided when full=True")
 
-        torch.save({
-            "model": model.state_dict(),
-            "optimizer": optimizer.state_dict(),
-            "epoch": epoch,
-            "val_loss": val_loss,
-        }, file_path)
+        torch.save(
+            {
+                "model": model.state_dict(),
+                "optimizer": optimizer.state_dict(),
+                "scheduler": (
+                    scheduler.state_dict()
+                    if scheduler is not None
+                    else None
+                ),
+                "epoch": epoch,
+                "val_loss": val_loss,
+                "best_val_acc": best_val_acc,
+            },
+            file_path,
+        )
     else:
         torch.save(model.state_dict(), file_path)
+
 
 
 def load_checkpoint(
     model: nn.Module,
     file_path: str | Path,
     optimizer: torch.optim.Optimizer | None = None,
+    scheduler=None,
     full: bool = False,
     map_location: str | torch.device | None = None,
 ) -> dict | None:
     """
-    Load a checkpoint from disk.
+    Load model weights or restore a complete training checkpoint.
 
-    Loads model weights in all cases. If `full=True`, also restores the optimizer
-    state and returns training metadata.
+    In quick-load mode, only the model weights are loaded. This mode
+    supports both model-only checkpoint files and full checkpoint files.
+
+    In full-load mode, the function restores the model and optimizer
+    states, restores the scheduler state when available, and returns the
+    saved training metadata required to resume training.
 
     Args:
         model (nn.Module):
-            Model to load weights into.
+            Model into which the saved parameters will be loaded.
+
         file_path (str | Path):
             Path to the checkpoint file.
-        optimizer (torch.optim.Optimizer, optional):
-            Optimizer to restore state into (required if full=True).
+
+        optimizer (torch.optim.Optimizer | None, optional):
+            Optimizer whose internal state will be restored. Required when
+            `full=True`.
+
+        scheduler (optional):
+            Learning-rate scheduler whose state will be restored when both
+            a scheduler is provided and a scheduler state exists in the
+            checkpoint.
+
         full (bool, optional):
-            If True, expects a full checkpoint (model + optimizer + metadata).
-        map_location (str | torch.device, optional):
-            Device mapping for loading.
+            If `True`, restores the complete training state. If `False`,
+            loads only the model weights. Defaults to `False`.
+
+        map_location (str | torch.device | None, optional):
+            Device mapping passed to `torch.load`, such as `"cpu"` or a
+            CUDA device. Defaults to `None`.
 
     Returns:
         dict | None:
-            Metadata dictionary (e.g., {"epoch", "val_loss"}) if available,
-            otherwise None.
+            When `full=True`, returns a dictionary containing:
+
+            - `epoch`: saved training epoch, or `0` if unavailable;
+            - `val_loss`: saved validation loss, or `None` if unavailable;
+            - `best_val_acc`: saved best validation accuracy, or `0.0`
+              if unavailable.
+
+            Returns `None` when loading model weights only.
+
+    Raises:
+        ValueError:
+            If `full=True` but no optimizer is provided.
+
+        FileNotFoundError:
+            If the checkpoint file does not exist.
+
+        KeyError:
+            If `full=True` and the checkpoint does not contain the required
+            model or optimizer state dictionaries.
+
+        RuntimeError:
+            If the saved model or optimizer state is incompatible with the
+            current model or optimizer configuration.
     """
     file_path = Path(file_path)
-    checkpoint = torch.load(file_path, map_location=map_location)
+
+    checkpoint = torch.load(
+        file_path,
+        map_location=map_location,
+        weights_only=False,
+    )
 
     if full:
         if optimizer is None:
@@ -528,14 +606,117 @@ def load_checkpoint(
         model.load_state_dict(checkpoint["model"])
         optimizer.load_state_dict(checkpoint["optimizer"])
 
+        if (
+            scheduler is not None
+            and checkpoint.get("scheduler") is not None
+        ):
+            scheduler.load_state_dict(checkpoint["scheduler"])
+
         return {
-            "epoch": checkpoint.get("epoch"),
+            "epoch": checkpoint.get("epoch", 0),
             "val_loss": checkpoint.get("val_loss"),
+            "best_val_acc": checkpoint.get("best_val_acc", 0.0),
         }
 
+    # Load only model weights for inference.
+    if isinstance(checkpoint, dict) and "model" in checkpoint:
+        model_state = checkpoint["model"]
     else:
-        model.load_state_dict(checkpoint)
-        return None
+        model_state = checkpoint
+
+    model.load_state_dict(model_state)
+    return None
+
+
+def check_and_load_checkpoint(
+    model: nn.Module,
+    checkpoint_path: str | Path,
+    optimizer: torch.optim.Optimizer,
+    scheduler,
+    device: torch.device,
+) -> tuple[int, float]:
+    """
+    Check whether a full training checkpoint exists and restore it.
+
+    If the checkpoint file exists, the function restores the model,
+    optimizer, and scheduler states using `load_checkpoint`. It also
+    retrieves the saved training metadata required to continue training
+    from the next epoch.
+
+    If no checkpoint exists, training starts from epoch 1 with the best
+    validation accuracy initialized to 0.0.
+
+    Args:
+        model (nn.Module):
+            Model whose parameters will be restored.
+
+        checkpoint_path (str | Path):
+            Path to the full training checkpoint.
+
+        optimizer (torch.optim.Optimizer):
+            Optimizer whose internal state will be restored.
+
+        scheduler:
+            Learning-rate scheduler whose state will be restored when a
+            scheduler state is available in the checkpoint. May be `None`
+            when no scheduler is used.
+
+        device (torch.device):
+            Device used to map checkpoint tensors during loading.
+
+    Returns:
+        tuple[int, float]:
+            A tuple containing:
+
+            - `start_epoch`:
+              The next epoch from which training should continue. Returns
+              `1` when no checkpoint exists.
+
+            - `best_val_acc`:
+              The highest validation accuracy recorded in the checkpoint.
+              Returns `0.0` when no checkpoint exists.
+
+    Raises:
+        ValueError:
+            If the checkpoint is loaded in full mode but no optimizer is
+            provided.
+
+        FileNotFoundError:
+            If the checkpoint file becomes unavailable during loading.
+
+        KeyError:
+            If the checkpoint does not contain the required model or
+            optimizer state dictionaries.
+
+        RuntimeError:
+            If the saved model or optimizer state is incompatible with the
+            current configuration.
+    """
+    checkpoint_path = Path(checkpoint_path)
+
+    if not checkpoint_path.is_file():
+        print("No previous checkpoint found. Starting from epoch 1.")
+        return 1, 0.0
+
+    metadata = load_checkpoint(
+        model=model,
+        file_path=checkpoint_path,
+        optimizer=optimizer,
+        scheduler=scheduler,
+        full=True,
+        map_location=device,
+    )
+
+    start_epoch = metadata["epoch"] + 1
+    best_val_acc = metadata["best_val_acc"]
+
+
+    print(
+        f"Checkpoint loaded. Resuming from epoch {start_epoch}. "
+        f"Best validation accuracy: {best_val_acc:.2f}%."
+    )
+
+    return start_epoch, best_val_acc
 
 
 def count_parameters(
