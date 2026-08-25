@@ -85,13 +85,13 @@ def main(args: argparse.Namespace | None = None) -> None:
         dataset=cfg.dataset,
         batch_size=cfg.training.batch_size,
         train_validation_split=cfg.training.validation_split,
-        seed=cfg.seed
+        seed=cfg.seed,
     )
 
     model, loss_fn, optimizer, device, scheduler = setup_model_for_training(
         config=cfg,
         num_classes=num_classes,
-        img_size=img_size
+        img_size=img_size,
     )
 
     metrics_records = train_model(
@@ -115,7 +115,7 @@ def main(args: argparse.Namespace | None = None) -> None:
         model=model,
         data_loader=test_loader,
         criterion=loss_fn,
-        device=device
+        device=device,
     )
     print(f"\nTest Loss: {test_loss:.3f}, Test Accuracy: {test_accuracy:.3f}%")
 
@@ -124,15 +124,17 @@ def main(args: argparse.Namespace | None = None) -> None:
         model_name=cfg.model_name,
         dataset=cfg.dataset,
         test_loss=test_loss,
-        test_acc=test_accuracy
+        test_acc=test_accuracy,
     )
 
     plot_metrics(
         statistics=metrics_records,
         model_name=cfg.model_name,
-        dataset=cfg.dataset
+        dataset=cfg.dataset,
     )
 
 
 if __name__ == "__main__":
-    main()
+    args = parse_args(["--model", "cnn", "--dataset", "mnist"])
+    main(args)
+    # main()

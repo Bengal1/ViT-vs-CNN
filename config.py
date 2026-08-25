@@ -76,7 +76,7 @@ class CNNConfig:
 class TrainingConfig:
     """Training process configuration."""
     batch_size: int = 64
-    epochs: int = 200
+    epochs: int = 15 #200
     validation_split: float = 0.15
 
     # --- Optimization behavior ---

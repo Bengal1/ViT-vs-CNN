@@ -58,6 +58,8 @@ def evaluate_model(
     Returns:
         tuple[float, float]:
             Evaluation accuracy (%) and average loss.
+    Raises:
+        ValueError: If data loader is empty
     """
     if len(data_loader) == 0:
         raise ValueError("data_loader must not be empty.")
@@ -78,7 +80,7 @@ def evaluate_model(
 
             total_loss += loss.item()
 
-            predicted = logits.max(dim=1)
+            predicted = logits.argmax(dim=1)
             correct += predicted.eq(labels).sum().item()
             total += labels.size(0)
 
@@ -132,6 +134,9 @@ def train_model(
             Maximum gradient norm for clipping.
         patience (int, optional):
             Early stopping patience.
+        new_run (bool, optional):
+            If True, start training from scratch. If False, resume from
+            the latest checkpoint.
 
     Returns:
         dict[str, list[float]]:
@@ -156,18 +161,15 @@ def train_model(
         "train_acc": [],
         "val_acc": [],
     }
-    if (new_run):
+    if new_run:
         best_val_acc = 0.0
         start_epoch = 1
     else:
-        start_epoch, best_val_acc = check_and_load_checkpoint(model,
-                                                              cfg.checkpoint_path,
-                                                              optimizer,
-                                                              scheduler,
-                                                              device)
-    best_val_loss = float("inf")
+        start_epoch, best_val_acc = check_and_load_checkpoint(
+            model, cfg.checkpoint_path, optimizer, scheduler, device
+        )
 
-    for epoch in range(1, num_epochs + 1):
+    for epoch in range(start_epoch, num_epochs + 1):
         train_acc, train_loss = _train_epoch(
             model=model,
             loss_fn=loss_fn,
@@ -188,14 +190,14 @@ def train_model(
             device=device,
         )
 
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
-            save_checkpoint(model, cfg.best_checkpoint_path,
-                            optimizer, scheduler, epoch, val_loss, best_val_acc,
-                            True)
-
         stats["val_loss"].append(val_loss)
         stats["val_acc"].append(val_acc)
+
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            save_checkpoint(model, cfg.checkpoint_path,
+                            optimizer, scheduler, epoch, val_loss, best_val_acc,
+                            full=True)
 
         print(
             f"Epoch {epoch}: "
@@ -298,7 +300,7 @@ def _train_epoch(
             optimizer.step()
             optimizer.zero_grad()
 
-        _, predicted = logits.argmax(dim=1)
+        predicted = logits.argmax(dim=1)
         correct += predicted.eq(labels).sum().item()
         total += labels.size(0)
 
@@ -361,18 +363,3 @@ def _early_stopping(
         best_so_far = min(metric_record[:-patience])
         recent_best = min(metric_record[-patience:])
         return recent_best >= best_so_far + delta
-
-
-
-    # CHECK THIS -  delta + or - in each case
-    #
-    # if best_is_max:
-    #     best = max(metric_record[:-patience])
-    #     recent = max(metric_record[-patience:])
-    #
-    #     return recent <= best - delta
-    #
-    # best = min(metric_record[:-patience])
-    # recent = min(metric_record[-patience:])
-    #
-    # return recent >= best + delta
