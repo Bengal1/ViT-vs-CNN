@@ -174,15 +174,21 @@ This difference leads to distinct trade-offs: CNNs benefit from strong inductive
 The experiments are conducted on four standard image classification datasets of increasing complexity: MNIST, CIFAR-10, Food-101, and Tiny ImageNet. Together they span a progression from simple, low-resolution, single-object images to large-scale, high-variability, real-world photos, allowing model performance to be evaluated as visual and semantic complexity increases.
 
 ### MNIST
+<img align="right" width="1448" height="1086" alt="dataset_samples" src="https://github.com/user-attachments/assets/e591cfab-09f5-452b-a9f0-8671baa55670" />
+
 MNIST is a grayscale dataset of handwritten digits (0–9) at 28×28 resolution, with 60,000 training and 10,000 test samples. Images are centered, single-channel, and contain simple, consistent strokes with minimal background or variation between samples of the same digit. Of the four datasets, it requires the least ability to relate distant parts of an image to each other: most digits can be classified from small, localized patterns alone, without connecting information from opposite corners of the image.
 
 ### CIFAR-10
+
 CIFAR-10 consists of 32×32 RGB images across 10 object classes (animals, vehicles, etc.), with 50,000 training and 10,000 test samples. It adds color, cluttered backgrounds, and greater variation within each class, while still using very low resolution. This makes it a useful midpoint: harder than MNIST, since classification can no longer rely on a single consistent local pattern, but still small enough in scale that CNNs, which are built to prioritize nearby pixels over distant ones, perform well.
 
 ### Food-101
+<img align="right" width="1022" height="1176" alt="dataset_dif" src="https://github.com/user-attachments/assets/968c0a03-c022-4570-a29d-364a477139e9" />
 Food-101 contains 101,000 real-world photos across 101 food categories, split into 750 training and 250 test images per class. Its training images are intentionally left uncleaned, some mislabeled or visually noisy, and resolution varies up to 512×512. Many dishes look similar to one another, while photos of the same dish can look very different depending on angle, plating, and lighting. This combination pushes classification to depend increasingly on relating different regions of an image to each other, rather than on any single local pattern.
 
 ### Tiny ImageNet
+
+
 Tiny ImageNet is a scaled-down version of ImageNet with 64×64 RGB images across 200 classes, comprising 100,000 training and 10,000 test samples. It has the highest number of classes of the four datasets, but, unlike Food-101, only a modest number of training images per class relative to that count. This combination of high complexity and limited data makes it the most demanding dataset in the study, testing not just which architecture handles complexity better, but which one still performs well when there is little data to learn from.
 
 Across all four datasets, difficulty is driven by the same four factors in different proportions: image resolution, number of classes, variation within each class, and training data available per class. MNIST and CIFAR-10 keep all four modest, favoring models built to prioritize nearby pixels. Food-101 raises visual and semantic complexity while keeping data per class high, favoring models able to relate distant regions of an image to one another. Tiny ImageNet raises complexity further without a matching increase in data, making it the clearest test of how each architecture holds up when that data runs short.</br>
