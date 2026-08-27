@@ -109,7 +109,7 @@ epoch 7** and then quickly stabilizes near its final performance. The ViT
 converges considerably more slowly and requires substantially more epochs to
 approach its best validation accuracy.
 
-<img width="2395" height="1432" alt="mnist_validation_accuracy_cnn_vs_vit" src="https://github.com/user-attachments/assets/8365ea22-e397-4cae-b6ee-4d9c39b83816" />
+<img width="2395" height="1432" width="70%" alt="mnist_validation_accuracy_cnn_vs_vit" src="https://github.com/user-attachments/assets/8365ea22-e397-4cae-b6ee-4d9c39b83816" />
 
 This difference is more informative than the final test-accuracy gap alone.
 Although both models eventually achieve similar performance, the CNN learns
