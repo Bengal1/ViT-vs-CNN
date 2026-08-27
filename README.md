@@ -85,6 +85,99 @@ python main.py --model vit --dataset tiny_imagenet
   </tr>
 </table>
 
+### Result Analysis
+
+The experiments reveal a clear shift in relative performance between the two
+architectures across the four datasets. The CNN performs better on MNIST and
+CIFAR-10, while the ViT achieves substantially better results on Food-101 and
+Tiny ImageNet.
+
+#### CNN advantage on MNIST and CIFAR-10
+
+On **MNIST**, both models achieve very high accuracy, with the CNN reaching
+**99.44%** compared with **99.08%** for the ViT. The difference is only
+**0.36 percentage points**, indicating that both architectures are highly
+effective on this relatively simple classification task.
+
+The CNN, however, reaches this result with approximately **0.84M parameters**,
+compared with **14.23M parameters** for the ViT. This makes the CNN considerably
+more parameter-efficient on MNIST.
+
+The difference becomes more pronounced on **CIFAR-10**. The CNN achieves
+**76.10%** test accuracy, while the ViT reaches **66.05%**, giving the CNN a
+**10.05 percentage-point advantage**. The CNN also uses only **1.20M
+parameters**, compared with **14.28M** for the ViT.
+
+These results are consistent with the strong inductive biases built into
+convolutional architectures. Local connectivity and translation equivariance
+make CNNs particularly effective at learning local visual features from
+relatively small image-classification datasets.
+
+#### ViT advantage on Food-101 and Tiny ImageNet
+
+The relative performance changes substantially on the more challenging
+datasets.
+
+On **Food-101**, the ViT achieves **67.335%** accuracy compared with only
+**30.578%** for the CNN, an improvement of **36.757 percentage points**.
+
+This result is particularly notable because the ViT uses approximately
+**14.41M parameters**, while the CNN contains approximately **29.56M
+parameters**. The large performance difference therefore cannot be explained
+simply by a larger ViT model.
+
+On **Tiny ImageNet**, the same overall trend appears. The ViT reaches
+**42.78%** accuracy compared with **27.45%** for the CNN, giving the ViT a
+**15.33 percentage-point advantage**. In this experiment the ViT is the larger
+model, with approximately **14.37M parameters** compared with **6.55M** for the
+CNN.
+
+Food-101 and Tiny ImageNet contain considerably more classes and greater
+visual variability than MNIST and CIFAR-10. The results suggest that the
+ViT becomes increasingly competitive when classification requires learning
+richer relationships across different regions of an image.
+
+#### Loss and accuracy
+
+The test-loss measurements are consistent with the accuracy results. The
+winning model on every dataset also achieves the lower test loss:
+
+- **MNIST:** CNN — 0.519 vs. ViT — 0.532
+- **CIFAR-10:** CNN — 1.087 vs. ViT — 1.574
+- **Food-101:** ViT — 2.001 vs. CNN — 3.238
+- **Tiny ImageNet:** ViT — 3.173 vs. CNN — 3.668
+
+This provides additional evidence that the observed differences are not
+limited to the top-1 accuracy metric.
+
+#### Overall observation
+
+Across the experiments, the comparison follows a clear pattern:
+
+**MNIST → CNN**  
+**CIFAR-10 → CNN**  
+**Food-101 → ViT**  
+**Tiny ImageNet → ViT**
+
+The CNN is especially effective on the smaller and simpler classification
+tasks, while the ViT performs substantially better on Food-101 and Tiny
+ImageNet.
+
+The strongest CNN result relative to the ViT appears on **CIFAR-10**, where
+the CNN is both more accurate and significantly smaller. The strongest ViT
+result appears on **Food-101**, where it exceeds the CNN by more than
+36 percentage points despite using fewer parameters.
+
+These experiments illustrate the different strengths and inductive biases of
+the two architectures rather than establishing that one architecture is
+universally superior.
+
+> **Note:** The models in this project are not parameter-matched, and their
+> parameter counts vary between datasets. The results should therefore be
+> interpreted as a comparison of the implemented CNN and ViT configurations
+> across different image-classification tasks, rather than as a strictly
+> controlled architecture benchmark.
+
 
 ## ⚙️ Training & Execution
 Follow the steps below to set up and run the project.
