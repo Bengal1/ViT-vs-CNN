@@ -103,13 +103,13 @@ The CNN, however, reaches this result with approximately **0.84M parameters**,
 compared with **14.23M parameters** for the ViT. This makes the CNN considerably
 more parameter-efficient on MNIST.
 
+<img align="right" width="40%" alt="mnist_validation_accuracy_cnn_vs_vit" src="https://github.com/user-attachments/assets/8365ea22-e397-4cae-b6ee-4d9c39b83816" />
+
 The training dynamics also reveal an important difference between the two
 architectures. The CNN reaches approximately **99% validation accuracy by
 epoch 7** and then quickly stabilizes near its final performance. The ViT
 converges considerably more slowly and requires substantially more epochs to
 approach its best validation accuracy.
-
-<img align="right" width="40%" alt="mnist_validation_accuracy_cnn_vs_vit" src="https://github.com/user-attachments/assets/8365ea22-e397-4cae-b6ee-4d9c39b83816" />
 
 This difference is more informative than the final test-accuracy gap alone.
 Although both models eventually achieve similar performance, the CNN learns
