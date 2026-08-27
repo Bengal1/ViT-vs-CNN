@@ -26,6 +26,7 @@ python main.py --model vit --dataset tiny_imagenet
     <th>Parameters</th>
     <th>Accuracy (%)</th>
     <th>Loss</th>
+    <th>Accuracy Gap (%)</th>
     <th>Best Model 🏆</th>
   </tr>
 
