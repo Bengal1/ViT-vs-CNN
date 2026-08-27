@@ -103,6 +103,21 @@ The CNN, however, reaches this result with approximately **0.84M parameters**,
 compared with **14.23M parameters** for the ViT. This makes the CNN considerably
 more parameter-efficient on MNIST.
 
+The training dynamics also reveal an important difference between the two
+architectures. The CNN reaches approximately **99% validation accuracy by
+epoch 7** and then quickly stabilizes near its final performance. The ViT
+converges considerably more slowly and requires substantially more epochs to
+approach its best validation accuracy.
+
+![MNIST Validation Accuracy](results/mnist_validation_accuracy.png)
+
+This difference is more informative than the final test-accuracy gap alone.
+Although both models eventually achieve similar performance, the CNN learns
+the MNIST task much faster and with far fewer parameters. This behavior is
+consistent with the strong spatial inductive bias of convolutional layers,
+which is particularly well suited to a dataset such as MNIST, where the
+classification signal is dominated by simple local structures and shapes.
+
 The difference becomes more pronounced on **CIFAR-10**. The CNN achieves
 **76.10%** test accuracy, while the ViT reaches **66.05%**, giving the CNN a
 **10.05 percentage-point advantage**. The CNN also uses only **1.20M
