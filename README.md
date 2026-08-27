@@ -33,7 +33,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td><code>CNN</code></td>
     <td>843,850</td>
     <td><b>99.44</b></td>
-    <td rowspan="2"><b>+0.36 pp</b></td>
+    <td rowspan="2" align="center"><b>+0.36 pp</b></td>
     <td rowspan="2" align="center"><b>CNN</b></td>
   </tr>
   <tr>
@@ -47,7 +47,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td><code>CNN</code></td>
     <td>1,204,874</td>
     <td><b>76.10</b></td>
-    <td rowspan="2"><b>+10.05 pp</b></td>
+    <td rowspan="2" align="center"><b>+10.05 pp</b></td>
     <td rowspan="2" align="center"><b>CNN</b></td>
   </tr>
   <tr>
@@ -61,7 +61,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td><code>CNN</code></td>
     <td>29,563,109</td>
     <td>30.58</td>
-    <td rowspan="2"><b>+36.76 pp</b></td>
+    <td rowspan="2" align="center"><b>+36.76 pp</b></td>
     <td rowspan="2" align="center"><b>ViT</b></td>
   </tr>
   <tr>
@@ -75,7 +75,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td><code>CNN</code></td>
     <td>6,545,224</td>
     <td>27.45</td>
-    <td rowspan="2"><b>+15.33 pp</b></td>
+    <td rowspan="2" align="center"><b>+15.33 pp</b></td>
     <td rowspan="2" align="center"><b>ViT</b></td>
   </tr>
   <tr>
