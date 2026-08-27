@@ -18,6 +18,72 @@ python main.py --model vit --dataset tiny_imagenet
 
 ## 📊 Results
 
+<table>
+  <tr>
+    <th>Dataset</th>
+    <th>Model</th>
+    <th>Parameters</th>
+    <th>Test Accuracy (%)</th>
+    <th>Accuracy Gap</th>
+    <th>Best Model 🏆</th>
+  </tr>
+
+  <tr>
+    <td rowspan="2"><b>MNIST</b></td>
+    <td><code>CNN</code></td>
+    <td>843,850</td>
+    <td><b>99.44</b></td>
+    <td rowspan="2"><b>+0.36 pp</b></td>
+    <td rowspan="2"><b>CNN</b></td>
+  </tr>
+  <tr>
+    <td><code>ViT</code></td>
+    <td>14,226,442</td>
+    <td>99.08</td>
+  </tr>
+
+  <tr>
+    <td rowspan="2"><b>CIFAR-10</b></td>
+    <td><code>CNN</code></td>
+    <td>1,204,874</td>
+    <td><b>76.10</b></td>
+    <td rowspan="2"><b>+10.05 pp</b></td>
+    <td rowspan="2"><b>CNN</b></td>
+  </tr>
+  <tr>
+    <td><code>ViT</code></td>
+    <td>14,281,354</td>
+    <td>66.05</td>
+  </tr>
+
+  <tr>
+    <td rowspan="2"><b>Food-101</b></td>
+    <td><code>CNN</code></td>
+    <td>29,563,109</td>
+    <td>30.58</td>
+    <td rowspan="2"><b>+36.76 pp</b></td>
+    <td rowspan="2"><b>ViT</b></td>
+  </tr>
+  <tr>
+    <td><code>ViT</code></td>
+    <td>14,408,549</td>
+    <td><b>67.34</b></td>
+  </tr>
+
+  <tr>
+    <td rowspan="2"><b>Tiny ImageNet</b></td>
+    <td><code>CNN</code></td>
+    <td>6,545,224</td>
+    <td>27.45</td>
+    <td rowspan="2"><b>+15.33 pp</b></td>
+    <td rowspan="2"><b>ViT</b></td>
+  </tr>
+  <tr>
+    <td><code>ViT</code></td>
+    <td>14,372,936</td>
+    <td><b>42.78</b></td>
+  </tr>
+</table>
 
 <table>
   <tr>
@@ -26,7 +92,6 @@ python main.py --model vit --dataset tiny_imagenet
     <th>Parameters</th>
     <th>Accuracy (%)</th>
     <th>Loss</th>
-    <th>Accuracy Gap (%)</th>
     <th>Best Model 🏆</th>
   </tr>
 
