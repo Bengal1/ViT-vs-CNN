@@ -141,6 +141,22 @@ This result is particularly notable because the ViT uses approximately
 parameters**. The large performance difference therefore cannot be explained
 simply by a larger ViT model.
 
+<img align="right" width="40%" alt="food101_validation_accuracy_cnn_vs_vit" src="https://github.com/user-attachments/assets/268e84eb-98f9-4fbf-97fa-f79dca40894d" />
+
+The training curves reveal an additional difference beyond the final accuracy.
+While the CNN improves initially, its validation performance gradually
+plateaus in the mid-20% range, reaching a best validation accuracy of
+**25.91%**. In contrast, the ViT continues to improve over a much longer
+training period, eventually reaching **62.66%** validation accuracy.
+
+This suggests that, under the configurations used in this project, additional
+optimization continues to benefit the ViT on Food-101, while the CNN reaches
+its effective performance ceiling much earlier.
+
+This behavior is the opposite of what is observed on MNIST, where the CNN
+converges to near-maximum accuracy within only a few epochs while the ViT
+requires substantially longer training.
+
 On **Tiny ImageNet**, the same overall trend appears. The ViT reaches
 **42.78%** accuracy compared with **27.45%** for the CNN, giving the ViT a
 **15.33 percentage-point advantage**. In this experiment the ViT is the larger
@@ -151,6 +167,7 @@ Food-101 and Tiny ImageNet contain considerably more classes and greater
 visual variability than MNIST and CIFAR-10. The results suggest that the
 ViT becomes increasingly competitive when classification requires learning
 richer relationships across different regions of an image.
+
 
 #### Loss and accuracy
 
