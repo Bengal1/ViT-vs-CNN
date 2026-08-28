@@ -174,8 +174,8 @@ relatively small image-classification datasets.
 The relative performance changes substantially on the more challenging
 datasets.
 
-On **Food-101**, the ViT achieves **67.335%** accuracy compared with only
-**27.964%** for the CNN, an improvement of **39.371 percentage points**.
+On **Food-101**, the ViT achieves **67.34%** accuracy compared with only
+**27.96%** for the CNN, an improvement of **39.38 percentage points**.
 
 This result is particularly notable because the ViT uses approximately
 **14.41M parameters**, while the CNN contains approximately **29.56M
