@@ -41,7 +41,7 @@ window from saved checkpoints.
 - **Learning-rate schedule:** 10-epoch linear warmup followed by cosine annealing
 - **Minimum learning rate:** `1e-6`
 - **Random seed:** `1755900008`
-- **Checkpoint selection:** the best model is selected according to validation performance before final test evaluation
+- **Checkpoint selection:** best validation-performing checkpoint
 
 ### Data Processing
 
