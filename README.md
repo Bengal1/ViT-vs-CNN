@@ -4,7 +4,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?logo=pytorch&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A comparative study of Vision Transformers (ViT) and Convolutional Neural Networks (CNNs) for image classification. This project explores how model performance evolves across datasets of increasing complexity, highlighting the transition from CNN dominance on simple tasks to ViT advantages on more challenging visual data.
+A comparative study of Vision Transformers (ViT) and Convolutional Neural Networks (CNNs) for image classification. This project explores how model performance evolves across datasets with different levels of visual complexity, class diversity, and scale, highlighting the transition from CNN dominance on simple tasks to ViT advantages on more challenging visual data.
 
 This repository also showcases the [*Vision Transformer (ViT)*](https://en.wikipedia.org/wiki/Vision_transformer), providing insight into its core architectural ideas, training dynamics, and its ability to capture global relationships through self-attention. It offers a practical view of the strengths and limitations of ViTs, and how they differ from traditional convolutional approaches.
 
@@ -354,7 +354,7 @@ Food-101 contains 101,000 real-world photos across 101 food categories, split in
 ### Tiny ImageNet
 
 
-Tiny ImageNet is a scaled-down version of ImageNet with 64×64 RGB images across 200 classes, comprising 100,000 training and 10,000 test samples. It has the highest number of classes of the four datasets, but, unlike Food-101, only a modest number of training images per class relative to that count. This combination of high complexity and limited data makes it the most demanding dataset in the study, testing not just which architecture handles complexity better, but which one still performs well when there is little data to learn from.
+Tiny ImageNet is a scaled-down version of ImageNet with 64×64 RGB images across 200 classes, comprising 100,000 training and 10,000 test samples. It has the highest number of classes of the four datasets, but, unlike Food-101, only a modest number of training images per class relative to that count. This combination of high complexity and limited data makes it one of the most demanding dataset in the study, testing not just which architecture handles complexity better, but which one still performs well when there is little data to learn from.
 
 Across all four datasets, difficulty is driven by the same four factors in different proportions: image resolution, number of classes, variation within each class, and training data available per class. MNIST and CIFAR-10 keep all four modest, favoring models built to prioritize nearby pixels. Food-101 raises visual and semantic complexity while keeping data per class high, favoring models able to relate distant regions of an image to one another. Tiny ImageNet raises complexity further without a matching increase in data, making it the clearest test of how each architecture holds up when that data runs short.</br>
 
