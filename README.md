@@ -61,7 +61,7 @@ python main.py --model vit --dataset tiny_imagenet
     <td><code>CNN</code></td>
     <td>29,563,109</td>
     <td>27.96</td>
-    <td rowspan="2" align="center"><b>+39.37 pp</b></td>
+    <td rowspan="2" align="center"><b>+39.38 pp</b></td>
     <td rowspan="2" align="center"><b>ViT</b></td>
   </tr>
   <tr>
