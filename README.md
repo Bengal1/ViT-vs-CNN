@@ -126,7 +126,7 @@ train/validation split is used for both architectures within each dataset.
   </tr>
 </table>
 
-### Result Analysis
+### Results Analysis
 
 The experiments reveal a clear shift in relative performance between the two
 architectures across the four datasets. The CNN performs better on MNIST and
