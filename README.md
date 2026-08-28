@@ -167,9 +167,9 @@ limited to the top-1 accuracy metric.
 
 #### Overall observation
 
-Across the experiments, the comparison follows a clear pattern:
-
 <img align="right" width="40%" alt="test_accuracy_all_datasets" src="https://github.com/user-attachments/assets/4b880e82-0c6e-44b3-bdba-308efe978a0f" />
+
+Across the experiments, the comparison follows a clear pattern:
 
 **MNIST → CNN**  
 **CIFAR-10 → CNN**  
