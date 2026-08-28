@@ -16,6 +16,47 @@ Run a training experiment in one command:
 python main.py --model vit --dataset tiny_imagenet
 ```
 
+## 🧪 Experimental Setup
+
+All experiments use the same training pipeline and evaluation procedure for the
+CNN and ViT within each dataset. The official test sets are kept separate from
+training and validation and are used only for final evaluation.
+
+| Dataset | Input Size | Train / Val Split | Batch Size | Optimizer | Learning Rate | Max Epochs | Early Stopping |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: |
+| MNIST | 28×28 | 85% / 15% | 64 | AdamW | 3e-4 | 150 | Patience 10 |
+| CIFAR-10 | 32×32 | 85% / 15% | 64 | AdamW | 3e-4 | 150 | Patience 10 |
+| Food-101 | 128×128 | 85% / 15% | 64 | AdamW | 3e-4 | 150* | Patience 10 |
+| Tiny ImageNet | 64×64 | 85% / 15% | 64 | AdamW | 3e-4 | 150 | Patience 10 |
+
+\* Some Food-101 ViT experiments were continued beyond the initial training
+window from saved checkpoints.
+
+### Training Configuration
+
+- **Optimizer:** AdamW
+- **Weight decay:** `5e-2`
+- **Label smoothing:** `0.1`
+- **Gradient clipping:** maximum norm of `1.0`
+- **Learning-rate schedule:** 10-epoch linear warmup followed by cosine annealing
+- **Minimum learning rate:** `1e-6`
+- **Random seed:** `1755900008`
+- **Checkpoint selection:** the best model is selected according to validation performance before final test evaluation
+
+### Data Processing
+
+MNIST and CIFAR-10 use dataset-specific normalization. Food-101 and Tiny
+ImageNet use stronger training augmentation, including random cropping,
+horizontal flipping, color jitter, RandAugment, and random erasing.
+
+Validation and test preprocessing is deterministic, and the same reproducible
+train/validation split is used for both architectures within each dataset.
+
+> **Note:** CNN and ViT configurations are not parameter-matched. The study
+> compares the implemented versions of both architectures rather than a
+> strictly parameter-equivalent benchmark.
+
+
 ## 📊 Results
 
 <table>
