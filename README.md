@@ -319,9 +319,10 @@ Across all four datasets, difficulty is driven by the same four factors in diffe
 
 
 ## 📚 Reference
-[BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805?utm_source=chatgpt.com)
 
 [An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929?utm_source=chatgpt.com)
+
+[Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
 [Decoupled Weight Decay Regularization](https://arxiv.org/abs/1711.05101)
 
