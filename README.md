@@ -278,12 +278,12 @@ The key component is self-attention, which allows each image patch to interact w
 By stacking multiple encoder blocks, ViT builds increasingly rich representations of the input, integrating both local details and global context for tasks such as image classification.
 
 For a deeper explanation of the Transformer architecture, see:
-[Simple Transformer](https://github.com/Bengal1/Simple-Transformer)
+[Transformer-From-Scratch-NLP](https://github.com/Bengal1/Transformer-From-Scratch-NLP)
 
 
 ## ViT vs CNN
 Convolutional Neural Networks (CNNs), introduced with LeNet-5 and popularized by AlexNet, have long been the dominant approach in computer vision. They use convolutional filters over local receptive fields, along with pooling and fully connected layers, to build hierarchical representations. This design encodes strong inductive biases such as locality and translation equivariance, making CNNs highly effective and data-efficient for many visual tasks.  
-To learn more about CNNs, see [Simple CNN Guide](https://github.com/Bengal1/Simple-CNN-Guide).
+To learn more about CNNs, see [CNN-Architecture-Guide](https://github.com/Bengal1/CNN-Architecture-Guide).
 
 The Vision Transformer (ViT), introduced by Dosovitskiy et al. (2020), replaces convolutions with a Transformer encoder. It represents an image as a sequence of fixed-size patches, which are embedded and processed using multi-head self-attention. This allows the model to capture global relationships between all patches directly, with a [CLS] token used to aggregate information for classification.
 
