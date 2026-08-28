@@ -237,6 +237,7 @@ Choose a model and dataset:
 **Datasets:**
 - `mnist` — MNIST dataset
 - `cifar10` — CIFAR-10 dataset
+- `food101` — Food-101 dataset
 - `tiny_imagenet` — Tiny ImageNet dataset
 
 ### Output
