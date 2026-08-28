@@ -363,7 +363,7 @@ Across all four datasets, difficulty is driven by the same four factors in diffe
 
 ## 📚 Reference
 
-[An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929?utm_source=chatgpt.com)
+[An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929)
 
 [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 
