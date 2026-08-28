@@ -234,14 +234,16 @@ Across the experiments, the comparison follows a clear pattern:
 **Food-101 → ViT**  
 **Tiny ImageNet → ViT**
 
-The CNN is especially effective on the smaller and simpler classification
-tasks, while the ViT performs substantially better on Food-101 and Tiny
-ImageNet.
+More importantly, the experiments reveal contrasting training behavior across
+the datasets. On MNIST, the CNN reaches near-ceiling performance within only a
+few epochs, while the ViT converges much more gradually. On Food-101, the pattern
+reverses: the CNN plateaus relatively early while the ViT continues improving
+through substantially longer training.
 
-The strongest CNN result relative to the ViT appears on **CIFAR-10**, where
-the CNN is both more accurate and significantly smaller. The strongest ViT
-result appears on **Food-101**, where it exceeds the CNN by more than
-39 percentage points despite using fewer parameters.
+The strongest CNN advantage appears on **CIFAR-10**, where it is both more
+accurate and significantly smaller. The strongest ViT advantage appears on
+**Food-101**, where it exceeds the CNN by **39.38 percentage points** despite
+using fewer parameters.
 
 These experiments illustrate the different strengths and inductive biases of
 the two architectures rather than establishing that one architecture is
