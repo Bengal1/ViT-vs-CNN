@@ -184,7 +184,7 @@ limited to the top-1 accuracy metric.
 
 #### Overall observation
 
-<img align="right" width="40%" alt="test_accuracy_all_datasets" src="https://github.com/user-attachments/assets/4b880e82-0c6e-44b3-bdba-308efe978a0f" />
+<img align="right" width="40%"  alt="vit_vs_cnn_test_accuracy" src="https://github.com/user-attachments/assets/471d3cf5-713e-4164-8676-9cfd7b82b9fb" />
 
 Across the experiments, the comparison follows a clear pattern:
 
