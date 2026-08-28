@@ -24,10 +24,10 @@ training and validation and are used only for final evaluation.
 
 | Dataset | Input Size | Train / Val Split | Batch Size | Optimizer | Learning Rate | Max Epochs | Early Stopping |
 | --- | ---: | ---: | ---: | --- | ---: | ---: | ---: |
-| MNIST | 28×28 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 10 |
-| CIFAR-10 | 32×32 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 10 |
-| Food-101 | 128×128 | 85% / 15% | 64 | AdamW | 2e-4 | 200* | Patience 10 |
-| Tiny ImageNet | 64×64 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 10 |
+| MNIST | 28×28 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 15 |
+| CIFAR-10 | 32×32 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 15 |
+| Food-101 | 128×128 | 85% / 15% | 64 | AdamW | 2e-4 | 200* | Patience 15 |
+| Tiny ImageNet | 64×64 | 85% / 15% | 64 | AdamW | 2e-4 | 200 | Patience 15 |
 
 \* Some Food-101 ViT experiments were continued beyond the initial training
 window from saved checkpoints.
