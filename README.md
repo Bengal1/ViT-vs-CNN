@@ -4,7 +4,8 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?logo=pytorch&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-<img align ="center" width="100%" alt="cnn_vs_vit_wide" src="https://github.com/user-attachments/assets/e7ae01bc-a988-4795-921c-188f2f713abd" />
+
+<img align ="center" width="100%" alt="cnn_vs_vit_wide2" src="https://github.com/user-attachments/assets/513a5e7d-4be8-4be8-995e-caf68a53e9e9" />
 
 
 A comparative study of Vision Transformers (ViT) and Convolutional Neural Networks (CNNs) for image classification. This project explores how model performance evolves across datasets with different levels of visual complexity, class diversity, and scale, highlighting the transition from CNN dominance on simple tasks to ViT advantages on more challenging visual data.
