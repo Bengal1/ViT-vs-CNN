@@ -1,3 +1,4 @@
+<img width="1448" height="1086" alt="cnn_vs_vit" src="https://github.com/user-attachments/assets/e86c5b88-f4f8-4ea4-967b-3cb4e3673d1d" />
 # Vision Transformer vs. CNN: Comparative Study
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
